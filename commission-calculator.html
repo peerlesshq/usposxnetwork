@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POSX｜收益计算器</title>
+<meta name="description" content="使用 POSX 收益计算器，快速查看持仓增值与推广佣金预估，固定三档上所价格场景。">
+<meta name="keywords" content="POSX, POSX Network, 收益计算器, 持仓增值, 直推奖金, 团队级差奖, 同级奖金">
+<meta name="robots" content="index,follow">
+<meta name="author" content="POSX Network">
+<meta name="theme-color" content="#00205B">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="POSX">
+<meta property="og:title" content="POSX｜收益计算器">
+<meta property="og:description" content="使用 POSX 收益计算器，快速查看持仓增值与推广佣金预估，固定三档上所价格场景。">
+<meta property="og:url" content="https://www.posx.network/commission-calculator.html">
+<meta property="og:image" content="https://www.posx.network/assets/img/og/posx-og-share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="POSX commission calculator">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="POSX｜收益计算器">
+<meta name="twitter:description" content="使用 POSX 收益计算器，快速查看持仓增值与推广佣金预估，固定三档上所价格场景。">
+<meta name="twitter:image" content="https://www.posx.network/assets/img/og/posx-og-share.png">
+<meta name="twitter:image:alt" content="POSX commission calculator">
+<link rel="canonical" href="https://www.posx.network/commission-calculator.html">
+<link rel="icon" type="image/svg+xml" href="./assets/img/logo/POSX-Logo-Black.svg">
+<link rel="shortcut icon" href="./assets/img/logo/POSX-Logo-Black.svg">
+<link rel="apple-touch-icon" href="./assets/img/logo/POSX-Logo-Black.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;600;700;900&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#00205B;--navy-90:#1A3670;--navy-70:#4D6490;--navy-50:#8092AD;--navy-30:#B3BFCE;--navy-15:#D9DFE7;--navy-08:#ECF0F5;--navy-04:#F5F7FA;--gold:#B4975A;--gold-dark:#96793E;--gold-light:#C8AB72;--gold-bg:#F8F4ED;--white:#FFFFFF;--black:#0D0D1A;--text-1:#1A1D2B;--text-2:#3D4158;--text-3:#6B7084;--text-4:#9398AB;--green:#0A7B46;--green-bg:#E8F5EE;--rule:#D6DAE3;--rule-light:#ECEEF2}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;background:#E8EBF0;color:var(--text-1);line-height:1.6}
+html[lang="zh-TW"] body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif}
+html[lang="en"] body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif}
+html[lang="ko"] body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
+a{color:inherit}
+.canvas{width:100%;max-width:100vw;margin:0 auto;background:var(--white);overflow:hidden}
+.en{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif}
+.header-bar{height:4px;background:linear-gradient(90deg,var(--navy) 0%,var(--navy) 70%,var(--gold) 70%,var(--gold) 100%)}
+.header{padding:20px 20px 16px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--rule);gap:12px;flex-wrap:wrap}
+.header-left{display:flex;align-items:center;gap:10px;min-width:0}
+.header-logo-img{height:28px;width:auto;display:block}
+.header-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:0}
+.header-doc-type{display:none;font-family:'Inter',sans-serif;font-size:.5rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.header-date{font-family:'Inter',sans-serif;font-size:.625rem;color:var(--text-4)}
+.lang-sw{display:inline-flex;align-items:center;gap:0;background:var(--navy-04);border:1px solid var(--rule);border-radius:6px;overflow:hidden;font-family:'Inter',sans-serif}
+.lang-btn{padding:5px 10px;font-size:.625rem;font-weight:600;border:none;background:none;cursor:pointer;color:var(--text-3);transition:all .15s;white-space:nowrap;letter-spacing:.3px;min-width:44px}
+.lang-btn:not(:last-child){border-right:1px solid var(--rule)}
+.lang-btn.active{background:var(--navy);color:#fff}
+.lang-btn:hover:not(.active){background:var(--navy-08)}
+
+.calc-hero{padding:28px 20px 22px;background:var(--white);border-bottom:1px solid var(--rule);position:relative;overflow:hidden}
+.calc-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 0%,rgba(180,151,90,.06),transparent 40%);pointer-events:none}
+.calc-hero-inner{position:relative;z-index:1}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:.75rem;color:var(--text-3);text-decoration:none;margin-bottom:22px}
+.back-link:hover{color:var(--navy)}
+.calc-hero-kicker{font-family:'Inter',sans-serif;font-size:.5625rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.calc-hero-title{font-size:1.75rem;line-height:1.25;font-weight:800;color:var(--navy);margin-bottom:12px}
+.calc-hero-desc{font-size:.875rem;line-height:1.85;max-width:760px;color:var(--text-3)}
+
+.mode-tabs-wrap{padding:18px 20px 0;background:var(--navy-04)}
+.mode-tabs{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--navy-04)}
+.mode-tab{border:none;background:transparent;color:var(--text-3);padding:10px 16px;font-size:.8125rem;font-weight:700;cursor:pointer}
+.mode-tab.active{background:var(--navy);color:#fff;border-radius:999px}
+
+.calc-body{padding:18px 20px 28px;background:var(--navy-04)}
+
+.input-section{margin-bottom:18px;padding:20px;border-radius:18px;border:1px solid var(--rule-light);background:var(--white)}
+.section-label{font-size:.8125rem;font-weight:700;color:var(--navy);margin-bottom:12px}
+.form-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:.75rem;font-weight:700;color:var(--navy)}
+.input,.select{width:100%;height:46px;padding:0 14px;border:1px solid var(--rule);border-radius:12px;font-size:.875rem;color:var(--text-1);background:var(--white)}
+.input:focus,.select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(180,151,90,.10)}
+.mode-form{display:none}
+.mode-form.active{display:block}
+
+.result-section{margin-top:22px;padding:20px;border-radius:18px;border:1px solid var(--rule-light);background:var(--white)}
+.result-section + .result-section{margin-top:16px}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-icon{width:32px;height:32px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:.875rem;font-weight:800;flex-shrink:0}
+.section-icon.static-icon{background:var(--gold-bg);color:var(--gold-dark);border:1px solid var(--gold-light)}
+.section-icon.dynamic-icon{background:var(--navy-08);color:var(--navy);border:1px solid var(--navy-15)}
+.section-title{font-size:1rem;font-weight:800;color:var(--navy)}
+.section-sub{font-size:.75rem;color:var(--text-3);margin-bottom:12px}
+
+.holding-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--rule-light)}
+.holding-row:last-child{border-bottom:none}
+.holding-label{font-size:.75rem;color:var(--text-3)}
+.holding-value{font-family:'Inter',sans-serif;font-size:1rem;font-weight:800;color:var(--navy)}
+
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.price-card{border-radius:16px;padding:16px;background:var(--navy-04);border:1px solid var(--rule-light);text-align:center}
+.price-tag{font-family:'Inter',sans-serif;font-size:.6875rem;color:var(--text-4);margin-bottom:6px}
+.price-val{font-family:'Inter',sans-serif;font-size:1.25rem;font-weight:800;color:var(--navy);margin-bottom:4px}
+.price-posx{font-size:.6875rem;color:var(--text-4)}
+
+.bonus-card{border-radius:14px;padding:14px;border:1px solid var(--rule-light);background:var(--navy-04);margin-bottom:10px}
+.bonus-card:last-child{margin-bottom:0}
+.bonus-card-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.bonus-card-title{font-size:.8125rem;font-weight:700;color:var(--navy)}
+.bonus-card-value{font-family:'Inter',sans-serif;font-size:1.125rem;font-weight:800;color:var(--gold-dark)}
+.bonus-card-note{font-size:.6875rem;color:var(--text-4);line-height:1.7}
+.bonus-card.equal-card{background:var(--gold-bg);border-color:var(--gold-light)}
+.bonus-card.equal-card .bonus-card-title{color:var(--gold-dark)}
+.bonus-card.equal-card .bonus-card-value{color:var(--gold-dark)}
+.bonus-card.equal-card .bonus-card-note{color:var(--text-3)}
+
+.total-bar{margin-top:14px;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--gold-bg),#FFFDF8);border:1px solid var(--gold-light);display:flex;justify-content:space-between;align-items:baseline}
+.total-label{font-size:.8125rem;font-weight:700;color:var(--navy)}
+.total-value{font-family:'Inter',sans-serif;font-size:1.375rem;font-weight:800;color:var(--gold-dark)}
+
+.settlement-note{margin-top:16px;padding:16px 20px;border-radius:18px;background:var(--white);border:1px solid var(--rule-light);border-left:3px solid var(--gold)}
+.settlement-note h4{font-size:.8125rem;color:var(--navy);margin-bottom:4px}
+.settlement-note p{font-size:.6875rem;line-height:1.8;color:var(--text-3)}
+
+.disclaimer{padding:16px 20px;border-top:1px solid var(--rule-light);background:var(--white)}
+.disclaimer p{font-size:.5625rem;color:var(--text-4);line-height:1.65}
+.footer-bar{padding:20px;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;background:var(--navy-04)}
+.footer-left{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px}
+.footer-left a{font-family:'Inter',sans-serif;font-size:.625rem;color:var(--navy);text-decoration:none;font-weight:500}
+.footer-left a:hover{color:var(--gold)}
+.footer-right{font-family:'Inter',sans-serif;font-size:.5625rem;color:var(--text-4)}
+.footer-accent{height:4px;background:linear-gradient(90deg,var(--navy) 0%,var(--navy) 70%,var(--gold) 70%,var(--gold) 100%)}
+
+@media(max-width:599px){
+  .header{display:block}
+  .header-left,.header-right{width:100%}
+  .header-left{margin-bottom:12px}
+  .header-right{align-items:flex-start;text-align:left}
+  .lang-sw{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%}
+  .lang-btn{min-width:0;padding:6px 4px;text-align:center}
+  .price-grid{grid-template-columns:1fr}
+}
+@media(min-width:600px){
+  .header{padding:24px 40px 20px}
+  .header-doc-type{display:block}
+  .calc-hero{padding:40px 40px 34px}
+  .mode-tabs-wrap{padding:20px 40px 0}
+  .calc-body{padding:20px 40px 40px}
+  .footer-bar{padding:24px 40px;flex-direction:row;justify-content:space-between;text-align:left}
+  .disclaimer{padding:18px 40px}
+}
+@media(min-width:1020px){
+  .canvas{width:960px;margin:40px auto;box-shadow:0 2px 40px rgba(0,32,91,.08)}
+  .header{padding:32px 72px 28px}
+  .header-logo-img{height:34px}
+  .calc-hero{padding:48px 72px 38px}
+  .calc-hero-title{font-size:2.4rem;max-width:12ch}
+  .mode-tabs-wrap{padding:24px 72px 0}
+  .calc-body{padding:24px 72px 48px}
+  .disclaimer{padding:20px 72px}
+  .footer-bar{padding:28px 72px}
+}
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="header-bar"></div>
+  <div class="header">
+    <div class="header-left">
+      <img class="header-logo-img" src="./assets/img/logo/POSX-Logo-Black.svg" alt="POSX">
+    </div>
+    <div class="header-right">
+      <div class="lang-sw">
+        <button class="lang-btn active" data-lang="zh-CN">简体</button>
+        <button class="lang-btn" data-lang="zh-TW">繁體</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="ko">KO</button>
+      </div>
+      <div class="header-doc-type en" data-i18n="header_doc_type">Returns Calculator</div>
+      <div class="header-date en">March 2026</div>
+    </div>
+  </div>
+
+  <section class="calc-hero">
+    <div class="calc-hero-inner">
+      <a class="back-link" href="./posx-infographic.html"><span class="en">←</span> <span data-i18n="back_link">返回项目介绍</span></a>
+      <div class="calc-hero-kicker en" data-i18n="hero_kicker">Quick Calculator</div>
+      <h1 class="calc-hero-title" data-i18n="hero_title">收益计算器</h1>
+      <p class="calc-hero-desc" data-i18n="hero_desc">快速估算您的持仓增值与推广佣金收入，所有佣金按 U 结算。</p>
+    </div>
+  </section>
+
+  <div class="mode-tabs-wrap">
+    <div class="mode-tabs" role="tablist">
+      <button class="mode-tab active" data-mode="quick" data-i18n="mode_quick">快速模式</button>
+      <button class="mode-tab" data-mode="detail" data-i18n="mode_detail">详细模式</button>
+    </div>
+  </div>
+
+  <main class="calc-body">
+    <div class="input-section">
+      <div class="section-label" data-i18n="input_label">输入参数</div>
+
+      <div id="quickForm" class="mode-form active">
+        <div class="form-grid">
+          <div class="field">
+            <label for="qPkg" data-i18n="field_my_package">我的入金套餐 (U)</label>
+            <select class="select" id="qPkg">
+              <option value="1000">1,000U</option>
+              <option value="5000" selected>5,000U</option>
+              <option value="10000">10,000U</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="qDirect" data-i18n="field_direct_count">直推人数</label>
+            <input class="input" id="qDirect" type="number" min="0" step="1" value="3">
+          </div>
+          <div class="field">
+            <label for="qAvg" data-i18n="field_avg_package">每人平均套餐</label>
+            <select class="select" id="qAvg">
+              <option value="1000">1,000U</option>
+              <option value="5000" selected>5,000U</option>
+              <option value="10000">10,000U</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="detailForm" class="mode-form">
+        <div class="form-grid">
+          <div class="field">
+            <label for="dPkg" data-i18n="field_my_package">我的入金套餐 (U)</label>
+            <select class="select" id="dPkg">
+              <option value="1000">1,000U</option>
+              <option value="5000" selected>5,000U</option>
+              <option value="10000">10,000U</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="d1k" data-i18n="field_d1k">直推 1,000U 套餐人数</label>
+            <input class="input" id="d1k" type="number" min="0" step="1" value="1">
+          </div>
+          <div class="field">
+            <label for="d5k" data-i18n="field_d5k">直推 5,000U 套餐人数</label>
+            <input class="input" id="d5k" type="number" min="0" step="1" value="1">
+          </div>
+          <div class="field">
+            <label for="d10k" data-i18n="field_d10k">直推 10,000U 套餐人数</label>
+            <input class="input" id="d10k" type="number" min="0" step="1" value="1">
+          </div>
+          <div class="field">
+            <label for="dTeam" data-i18n="field_team_vol">团队总业绩 (U)</label>
+            <input class="input" id="dTeam" type="number" min="0" step="1000" value="200000">
+          </div>
+          <div class="field">
+            <label for="dLeg" data-i18n="field_leg_vol">小区业绩 (U)</label>
+            <input class="input" id="dLeg" type="number" min="0" step="1000" value="50000">
+          </div>
+          <div class="field">
+            <label for="dEqual" data-i18n="field_equal">同级奖金资格</label>
+            <select class="select" id="dEqual">
+              <option value="none" data-i18n="equal_none">未触发</option>
+              <option value="V3">V3 — 2%</option>
+              <option value="V4">V4 — 3%</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ STATIC ═══ -->
+    <div class="result-section" id="staticSection">
+      <div class="section-header">
+        <div class="section-icon static-icon en">S</div>
+        <div class="section-title" data-i18n="static_title">持仓增值</div>
+      </div>
+      <div class="section-sub" data-i18n="static_sub">以公开销售价格购入 POSX 代币，按上所后不同价格场景查看持仓参考价值。</div>
+
+      <div class="holding-row">
+        <div class="holding-label" data-i18n="holding_amount">入金金额</div>
+        <div class="holding-value" id="holdAmount">5,000U</div>
+      </div>
+      <div class="holding-row">
+        <div class="holding-label" data-i18n="holding_tokens">获得代币</div>
+        <div class="holding-value" id="holdTokens">0 POSX</div>
+      </div>
+
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="price-tag en">$0.15</div>
+          <div class="price-val" id="pv1">$0</div>
+          <div class="price-posx" id="pp1">0 POSX</div>
+        </div>
+        <div class="price-card">
+          <div class="price-tag en">$0.20</div>
+          <div class="price-val" id="pv2">$0</div>
+          <div class="price-posx" id="pp2">0 POSX</div>
+        </div>
+        <div class="price-card">
+          <div class="price-tag en">$0.25</div>
+          <div class="price-val" id="pv3">$0</div>
+          <div class="price-posx" id="pp3">0 POSX</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ DYNAMIC ═══ -->
+    <div class="result-section" id="dynamicSection">
+      <div class="section-header">
+        <div class="section-icon dynamic-icon en">D</div>
+        <div class="section-title" data-i18n="dynamic_title">推广佣金</div>
+      </div>
+      <div class="section-sub" data-i18n="dynamic_sub">通过市场推广、直推与团队发展获得的佣金收入，按 U 结算。</div>
+
+      <div class="bonus-card" id="directCard">
+        <div class="bonus-card-head">
+          <div class="bonus-card-title" data-i18n="bonus_direct">直推奖金</div>
+          <div class="bonus-card-value" id="directVal">0U</div>
+        </div>
+        <div class="bonus-card-note" id="directNote">--</div>
+      </div>
+
+      <div class="bonus-card" id="teamCard" style="display:none">
+        <div class="bonus-card-head">
+          <div class="bonus-card-title" data-i18n="bonus_team">团队级差奖</div>
+          <div class="bonus-card-value" id="teamVal">0U</div>
+        </div>
+        <div class="bonus-card-note" id="teamNote">--</div>
+      </div>
+
+      <div class="bonus-card equal-card" id="equalCard" style="display:none">
+        <div class="bonus-card-head">
+          <div class="bonus-card-title" data-i18n="bonus_equal">同级奖金</div>
+          <div class="bonus-card-value" id="equalVal">--</div>
+        </div>
+        <div class="bonus-card-note" id="equalNote">--</div>
+      </div>
+
+      <div class="total-bar">
+        <div class="total-label" data-i18n="total_label">推广佣金合计</div>
+        <div class="total-value" id="totalVal">0U</div>
+      </div>
+
+    </div>
+
+    <!-- ═══ COMBINED ═══ -->
+    <div class="result-section">
+      <div class="section-header">
+        <div class="section-icon static-icon en">Σ</div>
+        <div class="section-title" data-i18n="combined_title">综合回报</div>
+      </div>
+      <div class="section-sub" data-i18n="combined_sub">持仓代币价值 + 推广佣金的综合参考。</div>
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="price-tag en">$0.15</div>
+          <div class="price-val" id="cv1">$0</div>
+          <div class="price-posx" id="cn1">+$0</div>
+        </div>
+        <div class="price-card">
+          <div class="price-tag en">$0.20</div>
+          <div class="price-val" id="cv2">$0</div>
+          <div class="price-posx" id="cn2">+$0</div>
+        </div>
+        <div class="price-card">
+          <div class="price-tag en">$0.25</div>
+          <div class="price-val" id="cv3">$0</div>
+          <div class="price-posx" id="cn3">+$0</div>
+        </div>
+      </div>
+
+      <div class="holding-row" style="margin-top:10px">
+        <div class="holding-label" data-i18n="roi_label">总利润 (按 $0.20)</div>
+        <div class="holding-value" id="roiVal">+$0</div>
+      </div>
+    </div>
+
+    <div class="settlement-note">
+      <h4 data-i18n="settle_title">结算说明</h4>
+      <p data-i18n="settle_body">直推奖金实时结算（按 U）；团队级差奖每 24 小时结算一次（按 U）；同级奖金仅展示资格与比例。持仓增值以上所后实际市场价格为准，以上数据仅供参考。</p>
+    </div>
+  </main>
+
+  <div class="disclaimer">
+    <p data-i18n="disclaimer">POSX 不提供固定收益，本轮配额为生态参与方式，请在理解机制与风险后参与。投资有风险，入市需谨慎。© 2026 POSX Network.</p>
+  </div>
+
+  <div class="footer-bar">
+    <div class="footer-left">
+      <a href="https://www.posx.network" target="_blank" class="en">www.posx.network</a>
+      <a href="https://posx.io" target="_blank" class="en">posx.io</a>
+      <a href="mailto:partnership@posx.io" class="en">partnership@posx.io</a>
+      <a href="https://x.com/POSX_Official" target="_blank" class="en">@POSX_Official</a>
+      <a href="https://t.me/POSX_Official" target="_blank" class="en">Telegram</a>
+    </div>
+    <div class="footer-right en">© 2026 POSX Network. All Rights Reserved.</div>
+  </div>
+  <div class="footer-accent"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+var PRICES = [0.15, 0.20, 0.25];
+var SALE_PRICE = 0.10;
+var RATES = {1000:0.10, 5000:0.12, 10000:0.15};
+
+function getRank(tv, lv){
+  if(tv>=5000000&&lv>=500000) return {l:'V4',r:0.20};
+  if(tv>=1000000&&lv>=200000) return {l:'V3',r:0.15};
+  if(tv>=500000&&lv>=100000) return {l:'V2',r:0.10};
+  if(tv>=200000&&lv>=50000) return {l:'V1',r:0.05};
+  return {l:'NONE',r:0};
+}
+
+var T={
+'zh-CN':{
+  seo_title:'POSX｜收益计算器',
+  seo_description:'使用 POSX 收益计算器，快速查看持仓增值与推广佣金预估，固定三档上所价格场景。',
+  header_doc_type:'Returns Calculator',
+  back_link:'返回项目介绍',
+  hero_kicker:'Quick Calculator',
+  hero_title:'收益计算器',
+  hero_desc:'快速估算您的持仓增值与推广佣金收入，所有佣金按 U 结算。',
+  mode_quick:'快速模式',
+  mode_detail:'详细模式',
+  input_label:'输入参数',
+  field_my_package:'我的入金套餐 (U)',
+  field_direct_count:'直推人数',
+  field_avg_package:'每人平均套餐',
+  field_d1k:'直推 1,000U 套餐人数',
+  field_d5k:'直推 5,000U 套餐人数',
+  field_d10k:'直推 10,000U 套餐人数',
+  field_team_vol:'团队总业绩 (U)',
+  field_leg_vol:'小区业绩 (U)',
+  field_equal:'同级奖金资格',
+  equal_none:'未触发',
+  static_title:'持仓增值',
+  static_sub:'以公开销售价格购入 POSX 代币，按上所后不同价格场景查看持仓参考价值。',
+  holding_amount:'入金金额',
+  holding_tokens:'获得代币',
+  dynamic_title:'推广佣金',
+  dynamic_sub:'通过市场推广、直推与团队发展获得的佣金收入，按 U 结算。',
+  bonus_direct:'直推奖金',
+  bonus_team:'团队级差奖',
+  bonus_equal:'同级奖金',
+  total_label:'推广佣金合计',
+  combined_title:'综合回报',
+  combined_sub:'持仓代币价值 + 推广佣金的综合参考。',
+  roi_label:'总利润 (按 $0.20)',
+  settle_title:'结算说明',
+  settle_body:'直推奖金实时结算（按 U）；团队级差奖每 24 小时结算一次（按 U）；同级奖金仅展示资格与比例。持仓增值以上所后实际市场价格为准，以上数据仅供参考。',
+  disclaimer:'POSX 不提供固定收益，本轮配额为生态参与方式，请在理解机制与风险后参与。投资有风险，入市需谨慎。© 2026 POSX Network.',
+  direct_note_q:'按 {count} 人 × {pkg}U × {rate} 测算。',
+  direct_note_d:'1,000U×{c1} + 5,000U×{c5} + 10,000U×{c10}，逐档累计。',
+  team_note:'已达 {rank}，级差奖比例 {rate}，按团队业绩 {vol}U 测算。',
+  team_note_none:'团队业绩或小区业绩尚未达到 V1 门槛。',
+  equal_note_none:'未触发同级奖金资格。',
+  equal_note_v3:'V3 同级奖金资格，参考比例 2%。',
+  equal_note_v4:'V4 同级奖金资格，参考比例 3%。'
+},
+'zh-TW':{
+  seo_title:'POSX｜收益計算器',
+  seo_description:'使用 POSX 收益計算器，快速查看持倉增值與推廣佣金預估。',
+  header_doc_type:'Returns Calculator',
+  back_link:'返回專案介紹',
+  hero_kicker:'Quick Calculator',
+  hero_title:'收益計算器',
+  hero_desc:'快速估算您的持倉增值與推廣佣金收入，所有佣金按 U 結算。',
+  mode_quick:'快速模式',
+  mode_detail:'詳細模式',
+  input_label:'輸入參數',
+  field_my_package:'我的入金套餐 (U)',
+  field_direct_count:'直推人數',
+  field_avg_package:'每人平均套餐',
+  field_d1k:'直推 1,000U 套餐人數',
+  field_d5k:'直推 5,000U 套餐人數',
+  field_d10k:'直推 10,000U 套餐人數',
+  field_team_vol:'團隊總業績 (U)',
+  field_leg_vol:'小區業績 (U)',
+  field_equal:'同級獎金資格',
+  equal_none:'未觸發',
+  static_title:'持倉增值',
+  static_sub:'以公開銷售價格購入 POSX 代幣，按上所後不同價格情境查看持倉參考價值。',
+  holding_amount:'入金金額',
+  holding_tokens:'獲得代幣',
+  dynamic_title:'推廣佣金',
+  dynamic_sub:'透過市場推廣、直推與團隊發展獲得的佣金收入，按 U 結算。',
+  bonus_direct:'直推獎金',
+  bonus_team:'團隊級差獎',
+  bonus_equal:'同級獎金',
+  total_label:'推廣佣金合計',
+  combined_title:'綜合回報',
+  combined_sub:'持倉代幣價值 + 推廣佣金的綜合參考。',
+  roi_label:'總利潤 (按 $0.20)',
+  settle_title:'結算說明',
+  settle_body:'直推獎金即時結算（按 U）；團隊級差獎每 24 小時結算一次（按 U）；同級獎金僅展示資格與比例。持倉增值以上所後實際市場價格為準，以上數據僅供參考。',
+  disclaimer:'POSX 不提供固定收益，本輪配額為生態參與方式，請在理解機制與風險後參與。投資有風險，入市需謹慎。© 2026 POSX Network.',
+  direct_note_q:'按 {count} 人 × {pkg}U × {rate} 測算。',
+  direct_note_d:'1,000U×{c1} + 5,000U×{c5} + 10,000U×{c10}，逐檔累計。',
+  team_note:'已達 {rank}，級差獎比例 {rate}，按團隊業績 {vol}U 測算。',
+  team_note_none:'團隊業績或小區業績尚未達到 V1 門檻。',
+  equal_note_none:'未觸發同級獎金資格。',
+  equal_note_v3:'V3 同級獎金資格，參考比例 2%。',
+  equal_note_v4:'V4 同級獎金資格，參考比例 3%。'
+},
+'en':{
+  seo_title:'POSX | Returns Calculator',
+  seo_description:'Use the POSX returns calculator to quickly estimate holding appreciation and promotional commissions across three listing price tiers.',
+  header_doc_type:'Returns Calculator',
+  back_link:'Back to Overview',
+  hero_kicker:'Quick Calculator',
+  hero_title:'Returns Calculator',
+  hero_desc:'Quickly estimate your holding appreciation and promotional commission income. All commissions are settled in U.',
+  mode_quick:'Quick Mode',
+  mode_detail:'Detailed Mode',
+  input_label:'Inputs',
+  field_my_package:'My Package (U)',
+  field_direct_count:'Direct Referral Count',
+  field_avg_package:'Average Package Per Referral',
+  field_d1k:'Direct 1,000U Package Count',
+  field_d5k:'Direct 5,000U Package Count',
+  field_d10k:'Direct 10,000U Package Count',
+  field_team_vol:'Team Volume (U)',
+  field_leg_vol:'Leg Volume (U)',
+  field_equal:'Equal-Level Eligibility',
+  equal_none:'Not Triggered',
+  static_title:'Holding Appreciation',
+  static_sub:'Purchase POSX tokens at the public sale price and view your estimated holding value at different listing prices.',
+  holding_amount:'Contribution Amount',
+  holding_tokens:'Tokens Received',
+  dynamic_title:'Promotional Commissions',
+  dynamic_sub:'Commission income earned through marketing, direct referrals, and team development. Settled in U.',
+  bonus_direct:'Direct Bonus',
+  bonus_team:'Team Differential Bonus',
+  bonus_equal:'Equal-Level Bonus',
+  total_label:'Total Commission',
+  combined_title:'Combined Returns',
+  combined_sub:'Token holding value plus promotional commissions.',
+  roi_label:'Total Profit (at $0.20)',
+  settle_title:'Settlement Note',
+  settle_body:'Direct bonuses settle in real time (in U). Team differential bonuses settle every 24 hours (in U). Equal-level bonuses show eligibility and ratio only. Holding appreciation is subject to actual market prices after listing.',
+  disclaimer:'POSX does not guarantee fixed returns. This allocation round is an ecosystem participation mechanism. Please understand the rules and risks before participating. © 2026 POSX Network.',
+  direct_note_q:'Estimated as {count} people × {pkg}U × {rate}.',
+  direct_note_d:'1,000U×{c1} + 5,000U×{c5} + 10,000U×{c10}, accumulated by tier.',
+  team_note:'{rank} qualified, differential rate {rate}, based on team volume {vol}U.',
+  team_note_none:'Team or leg volume has not reached the V1 threshold.',
+  equal_note_none:'Equal-level bonus has not been triggered.',
+  equal_note_v3:'V3 equal-level eligibility, reference ratio 2%.',
+  equal_note_v4:'V4 equal-level eligibility, reference ratio 3%.'
+},
+'ko':{
+  seo_title:'POSX | 수익 계산기',
+  seo_description:'POSX 수익 계산기로 보유 가치 상승과 추천 커미션을 빠르게 추정하세요.',
+  header_doc_type:'Returns Calculator',
+  back_link:'프로젝트 개요로 돌아가기',
+  hero_kicker:'Quick Calculator',
+  hero_title:'수익 계산기',
+  hero_desc:'보유 가치 상승과 추천 커미션 수입을 빠르게 추정합니다. 모든 커미션은 U로 정산됩니다.',
+  mode_quick:'빠른 모드',
+  mode_detail:'상세 모드',
+  input_label:'입력값',
+  field_my_package:'내 패키지 (U)',
+  field_direct_count:'직추천 인원',
+  field_avg_package:'인당 평균 패키지',
+  field_d1k:'직추천 1,000U 인원',
+  field_d5k:'직추천 5,000U 인원',
+  field_d10k:'직추천 10,000U 인원',
+  field_team_vol:'팀 총 실적 (U)',
+  field_leg_vol:'레그 실적 (U)',
+  field_equal:'동급 보너스 자격',
+  equal_none:'미발동',
+  static_title:'보유 가치 상승',
+  static_sub:'공개 판매 가격으로 POSX를 구매한 후 상장 가격별 보유 참고 가치를 확인하세요.',
+  holding_amount:'입금 금액',
+  holding_tokens:'수령 토큰',
+  dynamic_title:'추천 커미션',
+  dynamic_sub:'마케팅, 직추천, 팀 육성을 통해 얻는 커미션 수입이며 U로 정산됩니다.',
+  bonus_direct:'직추천 보너스',
+  bonus_team:'팀 레벨차 보너스',
+  bonus_equal:'동급 보너스',
+  total_label:'커미션 합계',
+  combined_title:'종합 수익',
+  combined_sub:'토큰 보유 가치 + 추천 커미션 종합 참고.',
+  roi_label:'총 이익 ($0.20 기준)',
+  settle_title:'정산 안내',
+  settle_body:'직추천 보너스는 실시간 정산(U). 팀 레벨차 보너스는 24시간마다 정산(U). 동급 보너스는 자격과 비율만 표시. 보유 가치는 상장 후 실제 시장 가격 기준.',
+  disclaimer:'POSX는 고정 수익을 보장하지 않습니다. 본 라운드는 생태계 참여 방식이며 메커니즘과 리스크를 이해한 후 참여하시기 바랍니다. © 2026 POSX Network.',
+  direct_note_q:'{count}명 × {pkg}U × {rate} 기준 추정.',
+  direct_note_d:'1,000U×{c1} + 5,000U×{c5} + 10,000U×{c10}, 구간별 누적.',
+  team_note:'{rank} 달성, 레벨차 비율 {rate}, 팀 실적 {vol}U 기준.',
+  team_note_none:'팀 또는 레그 실적이 V1 기준 미달.',
+  equal_note_none:'동급 보너스 자격 미발동.',
+  equal_note_v3:'V3 동급 보너스 자격, 참고 비율 2%.',
+  equal_note_v4:'V4 동급 보너스 자격, 참고 비율 3%.'
+}
+};
+
+var state={mode:'quick',lang:'zh-CN'};
+
+function dict(){return T[state.lang]||T['zh-CN']}
+function t(k){var d=dict();return d[k]!==undefined?d[k]:k}
+function fmt(v){if(!isFinite(v))return'0';return new Intl.NumberFormat(state.lang==='en'?'en-US':state.lang,{maximumFractionDigits:v>=1000?0:2}).format(v)}
+function fmtU(v){return fmt(v)+'U'}
+function fmtD(v){return'$'+fmt(v)}
+function pos(v){var n=Number(v);return isFinite(n)&&n>0?n:0}
+
+function calc(){
+  var pkg, directBonus, directCount, teamBonus=0, teamRank={l:'NONE',r:0}, equalLevel='none';
+
+  if(state.mode==='quick'){
+    pkg=pos(document.getElementById('qPkg').value);
+    directCount=pos(document.getElementById('qDirect').value);
+    var avg=pos(document.getElementById('qAvg').value);
+    directBonus=directCount*avg*(RATES[avg]||0);
+
+    document.getElementById('directNote').textContent=
+      t('direct_note_q').replace('{count}',fmt(directCount)).replace('{pkg}',fmt(avg)).replace('{rate}',(RATES[avg]*100||0)+'%');
+
+    document.getElementById('teamCard').style.display='none';
+    document.getElementById('equalCard').style.display='none';
+
+  } else {
+    pkg=pos(document.getElementById('dPkg').value);
+    var c1=pos(document.getElementById('d1k').value);
+    var c5=pos(document.getElementById('d5k').value);
+    var c10=pos(document.getElementById('d10k').value);
+    directCount=c1+c5+c10;
+    directBonus=c1*1000*RATES[1000]+c5*5000*RATES[5000]+c10*10000*RATES[10000];
+
+    document.getElementById('directNote').textContent=
+      t('direct_note_d').replace('{c1}',fmt(c1)).replace('{c5}',fmt(c5)).replace('{c10}',fmt(c10));
+
+    var tv=pos(document.getElementById('dTeam').value);
+    var lv=pos(document.getElementById('dLeg').value);
+    teamRank=getRank(tv,lv);
+    teamBonus=tv*teamRank.r;
+    equalLevel=document.getElementById('dEqual').value;
+
+    document.getElementById('teamCard').style.display='';
+    document.getElementById('teamVal').textContent=fmtU(teamBonus);
+    if(teamRank.l==='NONE'){
+      document.getElementById('teamNote').textContent=t('team_note_none');
+    } else {
+      document.getElementById('teamNote').textContent=
+        t('team_note').replace('{rank}',teamRank.l).replace('{rate}',(teamRank.r*100)+'%').replace('{vol}',fmt(tv));
+    }
+
+    document.getElementById('equalCard').style.display='';
+    if(equalLevel==='V3'){
+      document.getElementById('equalVal').textContent='V3 · 2%';
+      document.getElementById('equalNote').textContent=t('equal_note_v3');
+    } else if(equalLevel==='V4'){
+      document.getElementById('equalVal').textContent='V4 · 3%';
+      document.getElementById('equalNote').textContent=t('equal_note_v4');
+    } else {
+      document.getElementById('equalVal').textContent=t('equal_none');
+      document.getElementById('equalNote').textContent=t('equal_note_none');
+    }
+  }
+
+  var tokens=pkg/SALE_PRICE;
+  var totalComm=directBonus+teamBonus;
+
+  document.getElementById('holdAmount').textContent=fmtU(pkg);
+  document.getElementById('holdTokens').textContent=fmt(Math.floor(tokens))+' POSX';
+  document.getElementById('directVal').textContent=fmtU(directBonus);
+  document.getElementById('totalVal').textContent=fmtU(totalComm);
+
+  PRICES.forEach(function(p,i){
+    var holdVal=tokens*p;
+    document.getElementById('pv'+(i+1)).textContent=fmtD(holdVal);
+    document.getElementById('pp'+(i+1)).textContent=fmt(Math.floor(tokens))+' POSX';
+
+    var combined=holdVal+totalComm;
+    document.getElementById('cv'+(i+1)).textContent=fmtD(combined);
+    document.getElementById('cn'+(i+1)).textContent='+'+fmtD(combined-pkg);
+  });
+
+  var midHold=tokens*PRICES[1];
+  document.getElementById('roiVal').textContent='+'+fmtD(midHold+totalComm-pkg);
+}
+
+function setMode(m){
+  state.mode=m;
+  document.querySelectorAll('.mode-tab').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-mode')===m)});
+  document.getElementById('quickForm').classList.toggle('active',m==='quick');
+  document.getElementById('detailForm').classList.toggle('active',m==='detail');
+  calc();
+}
+
+function setLang(lang){
+  if(!T[lang])lang='zh-CN';
+  state.lang=lang;
+  var d=dict();
+  document.documentElement.lang=lang;
+  if(d.seo_title){
+    document.title=d.seo_title;
+    var og=document.querySelector('meta[property="og:title"]');
+    var tw=document.querySelector('meta[name="twitter:title"]');
+    if(og)og.setAttribute('content',d.seo_title);
+    if(tw)tw.setAttribute('content',d.seo_title);
+  }
+  if(d.seo_description){
+    var md=document.querySelector('meta[name="description"]');
+    var od=document.querySelector('meta[property="og:description"]');
+    var td=document.querySelector('meta[name="twitter:description"]');
+    if(md)md.setAttribute('content',d.seo_description);
+    if(od)od.setAttribute('content',d.seo_description);
+    if(td)td.setAttribute('content',d.seo_description);
+  }
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    if(d[k]!==undefined)el.innerHTML=d[k];
+  });
+  document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-lang')===lang)});
+  try{localStorage.setItem('posx_lang',lang)}catch(e){}
+  calc();
+}
+
+function detectLang(){
+  try{var s=localStorage.getItem('posx_lang');if(s&&T[s])return s}catch(e){}
+  var n=(navigator.language||navigator.userLanguage||'').toLowerCase();
+  if(n.indexOf('zh-tw')!==-1||n.indexOf('zh-hant')!==-1)return'zh-TW';
+  if(n.indexOf('ko')!==-1)return'ko';
+  if(n.indexOf('zh')!==-1)return'zh-CN';
+  return'en';
+}
+
+document.querySelectorAll('.mode-tab').forEach(function(b){b.addEventListener('click',function(){setMode(this.getAttribute('data-mode'))})});
+document.querySelectorAll('.lang-btn').forEach(function(b){b.addEventListener('click',function(){setLang(this.getAttribute('data-lang'))})});
+document.querySelectorAll('input,select').forEach(function(c){c.addEventListener('input',calc);c.addEventListener('change',calc)});
+
+setMode('quick');
+setLang(detectLang());
+})();
+</script>
+</body>
+</html>
